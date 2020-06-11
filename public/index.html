@@ -28,20 +28,17 @@
       <a href="/" class="brand-logo">Jenny's Firebase</a>
       <!-- 데스크톱 모드에서 보이는 메인메뉴 -->
       <ul class="right hide-on-med-and-down">
-        <li><a href="hosting.html"><i class="material-icons">language</i></a></li>
-        <li><a href="auth.html"><i class="material-icons">supervisor_account</i></a></li>
-        <li><a href="database.html"><i class="material-icons">dns</i></a></li>
-        <li><a href="storage.html"><i class="material-icons">perm_media</i></a></li>
+        <li><a href="hosting.html"><i class="material-icons">Hosting</i></a></li>
+        <li><a href="auth.html"><i class="material-icons">Authentication</i></a></li>
+        <li><a href="database.html"><i class="material-icons">Database</i></a></li>
+        <li><a href="storage.html"><i class="material-icons">Storage</i></a></li>
         <li><a class="dropdown-button" data-activates="dropdown1"><i class="material-icons">more_vert</i></a></li>
       </ul>
         <!-- 드롭다운 메뉴 -->
         <ul id="dropdown1" class="dropdown-content">
           <li><a class="black-text"><strong>plus</strong></a></li>
           <li class="divider"></li>
-          <li><a href="https://www.facebook.com/groups/aboutCoding/" target="_blank" class="indigo-text">ABCD</a></li>
-          <li><a href="http://sbsoft.kr/" target="_blank" class="indigo-text">MadeBy</a></li>
-          <li class="divider"></li>
-          <li><a href="#" class="BTN_NETWORKING">참가자</a></li>
+          <li><a href="https://www.facebook.com/groups/aboutCoding/" target="_blank" class="indigo-text">Progile</a></li>
         </ul>
       <!-- 모바일에서 보이는 메인 메뉴 -->
       <ul id="nav-mobile" class="side-nav">
@@ -50,10 +47,7 @@
         <li><a href="database.html">Database</a></li>
         <li><a href="storage.html">Storage</a></li>
         <li class="divider"></li>
-        <li><a href="https://m.facebook.com/groups/aboutCoding/" target="_blank">ABCD</a></li>
-        <li><a href="http://sbsoft.kr/" target="_blank">MadeBy</a></li>
-        <li class="divider"></li>
-        <li><a href="#" class="BTN_NETWORKING">참가자</a></li>
+        <li><a href="https://m.facebook.com/groups/aboutCoding/" target="_blank">Profile</a></li>
       </ul>
       <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
 
@@ -71,13 +65,21 @@
       </li>
     </ul>
 
+    <div class="row center">
+      <a href="/auth_google.html" class="btn indigo">Google Auth</a>
+      <a href="/auth_mail.html" class="btn indigo">Mail Auth</a>
+      <a href="/database_basic.html" class="btn indigo">Database</a>
+      <a href="/database_siteon.html" class="btn indigo">SiteOn</a>
+      <a href="/storage_memo.html" class="btn indigo">Storage Memo</a>
+    </div>
+    
     <!-- 프로필 -->
     <div class="row card-panel">
       <div class="col s12 m3 l3">
         <img src="/images/profile.jpg" alt="profile photo" class="responsive-img">
       </div>
       <div class="col s12 m9 l9">
-        <h5>이름 :
+        <h5>Name :
           <span id="MY_NAME">JENNY SONG</span></h5>
         <hr>
         <div class="row">
@@ -191,6 +193,27 @@
       $('#_my_domain').val(location.href);
       $('#FRM').submit();
     });
+  </script>
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+  <script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBRIBmU64B8kV5-Y6erT1uR4LTtlgu7Pk8",
+    authDomain: "jenny-master.firebaseapp.com",
+    databaseURL: "https://jenny-master.firebaseio.com",
+    projectId: "jenny-master",
+    storageBucket: "jenny-master.appspot.com",
+    messagingSenderId: "321622422493",
+    appId: "1:321622422493:web:ce33a1751abc2dc6877c34"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
   </script>
 </body>
 
