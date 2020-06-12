@@ -30,13 +30,22 @@
     <!-- 로그인박스 -->
     <div class="card">
       <div class="card-content">
-        Status : <!-- TODO 상태 보기용 span 추가-->
-        <span id ="AUTH_STATE" class="blue-text">No one</span>
+        State : <!-- TODO 상태 보기용 span 추가-->
+        <span id ="AUTH_STATE" class="blue-text">No User</span>
+
+        <!-- 유저 정보 확인용-->
+        <ol id = "USER_INFO">
+          <li>UID : <span id="USER_UID" class="blue-text"></span></li>
+          <li>Mail : <span id="USER_MAIL" class="blue-text"></span></li>
+          <li>Name : <span id="USER_NAME" class="blue-text"></span></li>
+          <li><img id="USER_PHOTO"></li>
+        </ol>
       </div>
       <div class="card-action">
         <!-- TODO 로그인 버튼 -->
         <button id="BTN_GOOGLE_LOGIN" type="button" class="btn indigo">Google Auth</button>
         <!-- TODO 로그아웃 버튼 -->
+        <button id="BTN_LOGOUT" type="button" class="btn indigo" style="display:none;">LOGOUT</button>
         <!-- TODO 유저 정보 확인용 요소 추가 -->
       </div>
     </div>
@@ -46,7 +55,7 @@
   <footer class="page-footer indigo">
     <div class="container">
       <div class="row center">
-        <a href="/auth.html" class="btn white indigo-text">돌아가기</a>
+        <a href="/auth.html" class="btn white indigo-text">Back</a>
       </div>
     </div>
     <div class="footer-copyright">
@@ -86,14 +95,41 @@
       //provider인증으로 로그인 처리
       firebase.auth().signInWithPopup(provider).then(function(result){
         //로그인 성공시
-        $("#AUTH_STATE").text("Hello! " + result.user.displayName);
+        //상태변화쪽에서 처리하기.
       }).catch(function(error){ //실패시
         alert(error.message)
       });
     });
 
     /* TODO 인증 상태 변화 감시하기 */
+    firebase.auth().onAuthStateChanged(function(user){
+      if(user) { //인증성공
+        $('#AUTH_STATE').text("Hello! " + result.user.displayName);
+        console.log(user);//user object
+        //로그아웃 버튼 보이기
+        $("#BTN_LOGOUT").show();
+        //user 정보 보이기
+        $("#USER_NAME").text(user.displayName);
+        $("#USER_MAIL").text(user.email);
+        $("#USER_UID").text(user.uid);
+        $("#USER_PHOTO").attr('src', user.photoURL);
+        $("#USER_INFO").show();
+      } else { //인증실패
+        $("#AUTH_STATE").text("Failed to auth.")
+        //로그아웃 버튼 보이면 안돼.
+        $("#BTN_LOGOUT").hide();
+        //user 정보 감추기
+        $("#USER_INFO").hide();
+      }
+    });
     /* TODO 로그아웃 버튼을 눌렀을 때 인증 해제 하도록 하기 */
+    $('#BTN_LOGOUT').click(function(){
+      firebase.auth().signOut().then(function(){
+        alert("Bye! See you soon.");
+      }, function (error){
+        alert(error.message);
+      });
+    });
   </script>
 
 </body>
