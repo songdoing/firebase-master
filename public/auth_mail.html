@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-  <title>firebase 인증</title>
+  <title>firebase Authentication</title>
 
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link type="text/css" rel="stylesheet" href="/css/materialize.min.css"  media="screen,projection"/>
@@ -31,45 +31,66 @@
     <div class="card">
       <div class="card-content">
 
-        <h4>[회원가입]</h4>
+        <h4>Sign Up</h4>
         <div class="row">
           <div class="input-field col s12">
             <!-- 가입 메일 주소 입력 폼 -->
-            <input id="INPUT_MAIL" placeholder="메일 주소를 입력하세요" type="email" class="validate">
+            <input id="INPUT_MAIL" placeholder="Email address" type="email" class="validate">
             <label for="INPUT_MAIL">Email</label>
           </div>
+
           <div class="input-field col s12">
             <!-- 가입 패스워드 입력 폼 -->
-            <input id="INPUT_PASSWORD" placeholder="비밀 번호를 입력하세요 (6자 이상)" type="password" class="validate">
+            <input id="INPUT_PASSWORD" placeholder="Password(over 6 characters)" type="password" class="validate">
             <label for="INPUT_PASSWORD">Password</label>
           </div>
-          <!-- TODO 닉네임 입력 폼 -->
+
+          <div class="input-field col s12">
+            <!-- TODO 닉네임 입력 폼 -->
+            <input id="INPUT_NAME" placeholder="Nickname" type="text" class="validate">
+            <label for="INPUT_NAME">displayName</label>
+          </div>
+          
           <div class="input-field col s12">
             <!-- 회원가입 버튼 -->
-            <button id="BTN_SIGNUP" type="button" class="btn right blue"> 회 원 가 입 </button>
+            <button id="BTN_SIGNUP" type="button" class="btn right blue"> SIGN UP </button>
           </div>
         </div>
 
-        <h4>[로그인]</h4>
+        <h4>Sign In</h4>
         <div class="row">
           <div class="input-field col s12">
             <!-- 로그인 메일 주소 입력 폼 -->
-            <input id="SIGNIN_MAIL" placeholder="메일 주소를 입력하세요" type="email" class="validate">
+            <input id="SIGNIN_MAIL" placeholder="Email address" type="email" class="validate">
             <label for="SIGNIN_MAIL">Email</label>
           </div>
           <div class="input-field col s12">
             <!-- 로그인 패스워드 입력 폼 -->
-            <input id="SIGNIN_PASSWORD" placeholder="비밀 번호를 입력하세요" type="password" class="validate">
+            <input id="SIGNIN_PASSWORD" placeholder="Password" type="password" class="validate">
             <label for="SIGNIN_PASSWORD">Password</label>
           </div>
           <div class="input-field col s12">
             <!-- 로그인 버튼  -->
-            <button id="BTN_SIGNIN" type="button" class="btn right indigo"> 회 원 로 그 인 </button>
+            <button id="BTN_SIGNIN" type="button" class="btn right indigo"> SIGN IN </button>
           </div>
         </div>
 
         <!-- TODO 로그인 상태보기 -->
+        <div class="row">
+          State : <!-- TODO 상태 보기용 span 추가-->
+          <span id ="AUTH_STATE" class="blue-text">No User</span>
+  
+          <!-- 유저 정보 확인용-->
+          <ol id = "USER_INFO">
+            <li>UID : <span id="USER_UID" class="blue-text"></span></li>
+            <li>Mail : <span id="USER_MAIL" class="blue-text"></span></li>
+            <li>Name : <span id="USER_NAME" class="blue-text"></span></li>
+            <li><img id="USER_PHOTO" width="60" height="60"></li>
+          </ol>
 
+          <!-- 로그아웃 버튼 -->
+          <button id="BTN_LOGOUT" type="button" class="btn indigo" style="display:none;">LOGOUT</button>
+        </div>
       </div><!-- end card-content div -->
     </div>
   </div>
@@ -78,14 +99,13 @@
   <footer class="page-footer indigo">
     <div class="container">
       <div class="row center">
-        <a href="/auth.html" class="btn white indigo-text">돌아가기</a>
+        <a href="/index.html" class="btn white indigo-text">HOME</a>
+        <a href="/auth.html" class="btn white indigo-text">BACK</a>
       </div>
     </div>
     <div class="footer-copyright">
       <div class="container">
-      &copy; 2016 Copyright <a href="http://sbsoft.kr" target="_blank" class="white-text">SBJang</a> with
-      <a href="http://abcds.kr/" target="_blank" class="white-text">ABCD</a> (
-      <a href="https://www.facebook.com/groups/aboutCoding/" target="_blank" class="white-text">Facebook</a> )
+      
       <a class="white-text right" href="http://materializecss.com/" target="_blank">design by Materializecss</a>
       </div>
     </div>
@@ -94,15 +114,95 @@
 <!-- /////////////////////////////////// javascript 스크립트 영역 /////////////////////////////////// -->
 
   <!--Import jQuery before materialize.js-->
-  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script type="text/javascript" src="/js/materialize.min.js"></script>
+
+  <!-- TODO firebase SDK 링크 -->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    
+    <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-database.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+       https://firebase.google.com/docs/web/setup#available-libraries -->
+  
+    <script src="/fireinit.js"></script>
 
   <!-- TODO firebase SDK 링크 -->
   <script type="text/javascript">
     /* TODO 인증 상태 변화 감시하기 */
+    firebase.auth().onAuthStateChanged(function(user){
+      if(user) { //인증성공
+        $('#AUTH_STATE').text("Hello! " + user.displayName);
+        console.log(user);//user object
+        //로그아웃 버튼 보이기
+        $("#BTN_LOGOUT").show();
+        $("#BTN_GOOGLE_LOGIN").hide();
+        
+        //user 정보 보이기
+        $("#USER_NAME").text(user.displayName);
+        $("#USER_MAIL").text(user.email);
+        $("#USER_UID").text(user.uid);
+        $("#USER_PHOTO").attr('src', user.photoURL);
+        $("#USER_INFO").show();
+      } else { //인증실패
+        $("#AUTH_STATE").text("No User.")
+        //로그아웃 버튼 보이면 안돼.
+        $("#BTN_LOGOUT").hide();
+        //user 정보 감추기
+        $("#USER_INFO").hide();
+      }
+    });
     /* TODO 로그아웃 버튼을 눌렀을 때 인증 해제 하도록 하기 */
+    $('#BTN_LOGOUT').click(function(){
+      firebase.auth().signOut().then(function(){
+        alert("Bye! See you soon.");
+      }, function (error){
+        alert(error.message);
+      });
+    });
     /* TODO 회원 가입을 눌렀을 경우  */
+    $('#BTN_SIGNUP').click(function(){
+      var signup_mail = $('#INPUT_MAIL').val();
+      var signup_password = $('#INPUT_PASSWORD').val();
+      //닉네임 값 변수로 가져오기
+      var signup_name = $('#INPUT_NAME').val();
+
+      firebase.auth().createUserWithEmailAndPassword(signup_mail, signup_password).then(function(){
+        //메일 회원가입에 성공시
+        //닉네임 업데이트
+        var user = firebase.auth().currentUser;
+        user.updateProfile({
+          'displayName' : signup_name,
+          'photoURL' : "/images/profile.jpg"
+        }).then(function(){
+          //회원정보 갱신 = 페이지 새로 고침
+          alert("Congrats! Welcome to firebase world.");
+          location.reload();
+
+        }, function(error){
+          alert(error.message);
+        });
+
+        //자동로그인 성공으로 간주=onAuthStateChanged()가 동작
+      }).catch(function(error){
+        //메일회원가입 실패
+        alert(error.message);
+      });
+    });
+
     /* TODO 로그인 버튼 클릭시 처리하기 */
+    $('#BTN_SIGNIN').click(function(){
+      var signin_mail = $('#SIGNIN_MAIL').val();
+      var signin_password = $('#SIGNIN_PASSWORD').val();
+
+      firebase.auth().signInWithEmailAndPassword(signin_mail, signin_password).then(function(){
+        //로그인 성공으로 간주 = onAuthStateChanged()가 동작
+      }).catch(function(error){
+        alert(error.message);
+      });
+    });
   </script>
 
 </body>
