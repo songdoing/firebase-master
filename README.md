@@ -4,10 +4,12 @@ firebase - Authentication, Database ,  storage, deploy
 ## General Info
 This application is how to use firebase.
 
-## technologies
+## Technologies
 This project is created with
 * firebase
 * JavaScript
+## Sample 
+jenny-master.firebaseapp.com/
 
 ## Screenshots
 <img src="https://user-images.githubusercontent.com/48890162/85970328-3004a600-b998-11ea-90b6-ab0f188ba429.png">
