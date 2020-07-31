@@ -9,7 +9,8 @@ This project is created with
 * firebase
 * JavaScript
 ## Sample 
-https://jenny-master.firebaseapp.com/
+<a href="https://jenny-master.firebaseapp.com/">Click Here</a>
+
 
 ## Screenshots
 <img src="https://user-images.githubusercontent.com/48890162/85970328-3004a600-b998-11ea-90b6-ab0f188ba429.png">
